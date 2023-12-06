@@ -3,5 +3,5 @@
 @section('title','home')
 
 @section('content')
-    <div>test</div>
+    <div>kristoper colompbus</div>
 @endsection
