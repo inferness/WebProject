@@ -3,5 +3,5 @@
 @section('title','home')
 
 @section('content')
-    <div>kristoper colompbus</div>
+    <div>INI HOME</div>
 @endsection
