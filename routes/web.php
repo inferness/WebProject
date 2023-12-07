@@ -13,6 +13,16 @@ use App\Http\Controllers\MainController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/popular', function () {
+    return view('popular');
+});
+Route::get('/saved', function () {
+    return view('saved');
+});
+Route::get('/profile', function () {
+    return view('profile');
+});
 Route::get('/', [MainController::class, 'home']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
 
