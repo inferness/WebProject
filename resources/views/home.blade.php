@@ -1,7 +1,11 @@
 @extends('layout')
 
-@section('title','home')
-
 @section('content')
-    <div>kristoper colompbus</div>
+    @auth
+        <div>{{ Auth::user()->username }}</div>
+        <div>{{ Auth::user()->email }}</div>
+        <div>{{ Auth::user()->password }}</div>
+    @else
+        <p>User not authenticated</p>
+    @endauth
 @endsection
