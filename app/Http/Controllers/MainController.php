@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use App\Models\CommunitiesModelModel;
 use App\Models\FollowedCommunityModelModel;
+use App\Models\PostModel;
 
 class MainController extends Controller
 {
@@ -123,8 +124,48 @@ class MainController extends Controller
     {
         // Fetch the community from the database
         $community = CommunitiesModel::where('CommunityId', $communityId)->first();
+        $posts = PostModel::where('CommunityId', $communityId)->get();
 
         // Return the community page view with the community data
-        return view('community', compact('community'));
+        return view('community', compact('community', 'posts'));
+    }
+
+    public function createPost($CommunityId){
+        if(Auth::check()){
+            $community = CommunitiesModel::where('CommunityId', $CommunityId)->first();
+            return view('createPost', compact('community'));
+        }
+        else{
+            return redirect()->route('login');
+        }
+    }
+
+    public function createPostForm($communityId, Request $request){
+
+        $faker = Faker::create();
+        $post = new PostModel();
+
+        $uniqueNumber = $faker->unique()->numberBetween(1,9999);
+        $formatNumber = sprintf('%04d', $uniqueNumber);
+        $uniqueID = 'PO' . $formatNumber;
+        $post->PostId = $uniqueID;
+
+        $title = $request->input('title');
+        $description = $request->input('description');
+
+        $post->CommunityId = $communityId;
+        $post->Title = $title;
+        $post->Description = $description;
+        $post->Owner = auth()->user()->UserId;
+
+        if ($request->hasFile('file_input')) {
+            $uploadedFile = $request->file('file_input');
+            $filePath = $uploadedFile->storeAs('public/images/posts', $post->PostId . '.jpg');
+            $post->ImagePath = 'storage/images/posts/' . $post->PostId . '.jpg';
+        }
+
+        $post->save();
+
+        return redirect()->route('home');
     }
 }

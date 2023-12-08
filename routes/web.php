@@ -40,3 +40,6 @@ Route::get('/logout', [MainController::class, 'logout'])->name('logout');
 Route::get('/createCommunity', [MainController::class, 'createCommunity'])->name('createCommunity');
 Route::post('/createCommunityForm', [MainController::class, 'createCommunityForm'])->name('createCommunityForm');
 
+Route::get('{communityId}/createPost', [MainController::class, 'createPost'])->name('createPost');
+Route::post('{communityId}/createPostForm,', [MainController::class, 'createPostForm'])->name('createPostForm');
+

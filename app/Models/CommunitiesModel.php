@@ -17,4 +17,8 @@ class CommunitiesModel extends Model
     public function FollowedBy(){
         return $this->hasMany(FollowedCommunityModel::class, 'CommunityId', 'CommunityId');
     }
+
+    public function Posts(){
+        return $this->hasMany(PostModel::class, 'CommunityId', 'CommunityId');
+    }
 }
