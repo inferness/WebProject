@@ -23,8 +23,11 @@ Route::get('/saved', function () {
 Route::get('/profile', function () {
     return view('profile');
 });
+
 Route::get('/', [MainController::class, 'home']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
+
+Route::get('/community/{communityId}', [MainController::class, 'communityPage'])->name('communityPage');
 
 Route::get('/login', [MainController::class, 'login'])->name('login');
 Route::post('/processLogin', [MainController::class, 'processLogin'])->name('processLogin');
@@ -33,4 +36,7 @@ Route::get('/register', [MainController::class, 'register'])->name('register');
 Route::post('/processRegister', [MainController::class, 'processRegister'])->name('processRegister');
 
 Route::get('/logout', [MainController::class, 'logout'])->name('logout');
+
+Route::get('/createCommunity', [MainController::class, 'createCommunity'])->name('createCommunity');
+Route::post('/createCommunityForm', [MainController::class, 'createCommunityForm'])->name('createCommunityForm');
 

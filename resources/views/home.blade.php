@@ -3,13 +3,6 @@
 @section('title','home')
 
 @section('content')
-    @auth
-        <div>{{ Auth::user()->username }}</div>
-        <div>{{ Auth::user()->email }}</div>
-        <div>{{ Auth::user()->password }}</div>
-    @else
-        <p>User not authenticated</p>
-    @endauth
     <div class="w-11/12">
         <!-- buat ngepost -->
         <div class="bg-gray-700 p-4 rounded-md flex items-start mb-4 mx-auto">

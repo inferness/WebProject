@@ -15,5 +15,11 @@ class UserModel extends Authenticatable implements AuthenticatableContract, Auth
 
     protected $table = 'User';
     protected $primaryKey = 'UserId';
+    protected $username = 'username';
+    public $incrementing = false;
     public $timestamps = false;
+
+    public function FollowedCommunity(){
+        return $this->hasMany(FollowedCommunityModel::class, 'UserId', 'UserId');
+    }
 }

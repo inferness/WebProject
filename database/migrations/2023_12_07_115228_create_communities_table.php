@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('User', function (Blueprint $table) {
-            $table->string('UserId')->unique();
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamp('JoinDate')->useCurrent();
+        Schema::create('Communities', function (Blueprint $table) {
+            $table->string('CommunityId')->unique();
+            $table->string('Name');
+            $table->text('Description');
+            $table->string('Owner');
+            $table->string('BannerPath')->unique();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('communities');
     }
 };
