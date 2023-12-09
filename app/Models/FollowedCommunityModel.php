@@ -10,6 +10,7 @@ class FollowedCommunityModel extends Model
     use HasFactory;
 
     protected $table = 'FollowedCommunity';
+    public $timestamps = false;
 
     public function User(){
         return $this->belongsTo(UserModel::class, 'UserId', 'UserId');

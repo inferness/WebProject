@@ -22,4 +22,8 @@ class UserModel extends Authenticatable implements AuthenticatableContract, Auth
     public function FollowedCommunity(){
         return $this->hasMany(FollowedCommunityModel::class, 'UserId', 'UserId');
     }
+
+    public function Posted(){
+        return $this->hasMany(PostModel::class, 'UserId', 'UserId');
+    }
 }

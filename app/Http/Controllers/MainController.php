@@ -10,12 +10,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use App\Models\CommunitiesModelModel;
+use App\Models\FollowedCommunityModel;
 use App\Models\FollowedCommunityModelModel;
 use App\Models\PostModel;
 
 class MainController extends Controller
 {
     //
+    public function landingPage(){
+        $user = Auth::user();
+
+        // dd($user);
+        return view('landing');
+    }
+
     public function home(){
         $user = Auth::user();
 
@@ -122,12 +130,14 @@ class MainController extends Controller
 
     public function communityPage($communityId)
     {
+        $userId = auth()->user()->UserId;
         // Fetch the community from the database
         $community = CommunitiesModel::where('CommunityId', $communityId)->first();
         $posts = PostModel::where('CommunityId', $communityId)->get();
+        $following = FollowedCommunityModel::where('CommunityId', $communityId)->where('UserId', $userId)->first();
 
         // Return the community page view with the community data
-        return view('community', compact('community', 'posts'));
+        return view('community', compact('community', 'posts', 'following'));
     }
 
     public function createPost($CommunityId){
@@ -156,7 +166,7 @@ class MainController extends Controller
         $post->CommunityId = $communityId;
         $post->Title = $title;
         $post->Description = $description;
-        $post->Owner = auth()->user()->UserId;
+        $post->UserId = auth()->user()->UserId;
 
         if ($request->hasFile('file_input')) {
             $uploadedFile = $request->file('file_input');
@@ -167,5 +177,35 @@ class MainController extends Controller
         $post->save();
 
         return redirect()->route('home');
+    }
+    public function postPage($postId){
+        $post = PostModel::where('PostId', $postId)->first();
+
+        return view('posts', compact('post'));
+    }
+
+    public function followCommunity($communityId){
+
+        $follow = new FollowedCommunityModel();
+        // dd($communityId);
+
+        $follow->UserId = auth()->user()->UserId;
+        $follow->CommunityId = $communityId;
+
+        $follow->save();
+
+        return redirect()->route('communityPage', ['communityId'=>$communityId]);
+    }
+
+    public function unfollowCommunity($communityId){
+
+        $userId = auth()->user()->UserId;
+
+        // Find and delete the record with the given user and community IDs
+        FollowedCommunityModel::where('UserId', $userId)
+        ->where('CommunityId', $communityId)
+        ->delete();
+
+        return redirect()->route('communityPage', ['communityId'=>$communityId]);
     }
 }

@@ -24,10 +24,11 @@ Route::get('/profile', function () {
     return view('profile');
 });
 
-Route::get('/', [MainController::class, 'home']);
+Route::get('/', [MainController::class, 'landingPage']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
 
 Route::get('/community/{communityId}', [MainController::class, 'communityPage'])->name('communityPage');
+Route::get('post/{postId}', [MainController::class, 'postPage'])->name('postPage');
 
 Route::get('/login', [MainController::class, 'login'])->name('login');
 Route::post('/processLogin', [MainController::class, 'processLogin'])->name('processLogin');
@@ -42,4 +43,7 @@ Route::post('/createCommunityForm', [MainController::class, 'createCommunityForm
 
 Route::get('{communityId}/createPost', [MainController::class, 'createPost'])->name('createPost');
 Route::post('{communityId}/createPostForm,', [MainController::class, 'createPostForm'])->name('createPostForm');
+
+Route::get('/follow/{communityId}', [MainController::class, 'followCommunity'])->name('follow');
+Route::get('/unfollow/{communityId}', [MainController::class, 'unfollowCommunity'])->name('unfollow');
 

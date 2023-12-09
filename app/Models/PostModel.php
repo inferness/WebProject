@@ -16,4 +16,8 @@ class PostModel extends Model
     public function InCommunity(){
         return $this->belongsTo(CommunitiesModel::class, 'CommunityId', 'CommunityId');
     }
+
+    public function PostedBy(){
+        return $this->belongsTo(UserModel::class, 'UserId', 'UserId');
+    }
 }

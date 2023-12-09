@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('UserId')->references('UserId')->on('User');
 
             $table->string('CommunityId');
-            $table->foreign('CommunityId')->references('CommunityId')->on('Communities');
+            $table->foreign('CommunityId')->references('CommunityId')->on('Communities')->onDelete('cascade');
         });
     }
 

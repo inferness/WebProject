@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreign('CommunityId')->references('CommunityId')->on('Communities')->onDelete('cascade');
             $table->string('Title');
             $table->text('Description');
-            $table->string('Owner');
+            $table->string('UserId')->references('UserId')->on('User')->onDelete('cascade');
             $table->string('ImagePath');
+            $table->timestamp('PostedAt')->useCurrent();
         });
     }
 
