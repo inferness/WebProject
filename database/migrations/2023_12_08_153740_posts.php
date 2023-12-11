@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::create('Posts', function (Blueprint $table) {
-            $table->string('PostId')->unique();
+            $table->id();
 
             $table->string('CommunityId');
             $table->foreign('CommunityId')->references('CommunityId')->on('Communities')->onDelete('cascade');

@@ -13,7 +13,7 @@ class FollowedCommunityModel extends Model
     public $timestamps = false;
 
     public function User(){
-        return $this->belongsTo(UserModel::class, 'UserId', 'UserId');
+        return $this->belongsTo(UserModel::class, 'Id', 'Id');
     }
 
     public function Community(){

@@ -13,11 +13,9 @@ return new class extends Migration
     {
         //
         Schema::create('savedPosts', function (Blueprint $table) {
-            $table->string('UserId');
-            $table->foreign('UserId')->references('UserId')->on('User');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            $table->string('PostId');
-            $table->foreign('PostId')->references('PostId')->on('Posts')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
         });
     }
 

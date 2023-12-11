@@ -13,21 +13,20 @@ class UserModel extends Authenticatable implements AuthenticatableContract, Auth
 {
     use HasFactory;
 
-    protected $table = 'User';
-    protected $primaryKey = 'UserId';
+    protected $table = 'Users';
     protected $username = 'username';
     public $incrementing = false;
     public $timestamps = false;
 
     public function FollowedCommunity(){
-        return $this->hasMany(FollowedCommunityModel::class, 'UserId', 'UserId');
+        return $this->hasMany(FollowedCommunityModel::class, 'Id', 'Id');
     }
 
     public function Posted(){
-        return $this->hasMany(PostModel::class, 'UserId', 'UserId');
+        return $this->hasMany(PostModel::class, 'id', 'UserId');
     }
 
     public function Upvotes(){
-        return $this->hasMany(UserUpvotesModel::class, 'UserId', 'UserId');
+        return $this->hasMany(UserUpvotesModel::class, 'Id', 'Id');
     }
 }

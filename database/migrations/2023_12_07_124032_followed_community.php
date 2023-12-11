@@ -13,8 +13,7 @@ return new class extends Migration
     {
         //
         Schema::create('FollowedCommunity', function (Blueprint $table) {
-            $table->string('UserId');
-            $table->foreign('UserId')->references('UserId')->on('User');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->string('CommunityId');
             $table->foreign('CommunityId')->references('CommunityId')->on('Communities')->onDelete('cascade');

@@ -29,7 +29,7 @@
         <div class="flex gap-5 max-w-full">
             <div class="flex flex-col gap-4 w-full">
                 @foreach ($posts as $post)
-                <a href="{{url( '/post/' . $post->PostId)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl max-w-[945px]">
+                <a href="{{url( '/post/' . $post->id)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl max-w-[945px]">
                     <div class="min-w-[200px] w-[200px] overflow-hidden xl:block hidden">
                         <img src="{{ asset($post->ImagePath) }}" alt="" class="h-full max-w object-cover">
                     </div>

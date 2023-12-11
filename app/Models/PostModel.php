@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Usamamuneerchaudhary\Commentify\Traits\Commentable;
 
 class PostModel extends Model
 {
     use HasFactory;
+    use Commentable;
     protected $table = 'Posts';
-    protected $primaryKey = 'PostId';
     public $incrementing = false;
     public $timestamps = false;
 
@@ -18,7 +19,7 @@ class PostModel extends Model
     }
 
     public function PostedBy(){
-        return $this->belongsTo(UserModel::class, 'UserId', 'UserId');
+        return $this->belongsTo(UserModel::class, 'UserId', 'id');
     }
 
     public function UpvotedBy(){

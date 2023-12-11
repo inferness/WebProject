@@ -47,6 +47,6 @@ Route::post('{communityId}/createPostForm,', [MainController::class, 'createPost
 Route::get('/follow/{communityId}', [MainController::class, 'followCommunity'])->name('follow');
 Route::get('/unfollow/{communityId}', [MainController::class, 'unfollowCommunity'])->name('unfollow');
 
-Route::get('/upvote/{postId}', [MainController::class, 'upvotePost'])->name('upvotePost');
-Route::get('/downvote/{postId}', [MainController::class, 'downvotePost'])->name('downvotePost');
+Route::get('/upvote/{id}', [MainController::class, 'upvotePost'])->name('upvotePost');
+Route::get('/downvote/{id}', [MainController::class, 'downvotePost'])->name('downvotePost');
 

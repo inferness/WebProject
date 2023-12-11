@@ -13,10 +13,10 @@ class UserUpvotesModel extends Model
     public $timestamps = false;
 
     public function User(){
-        return $this->belongsTo(UserModel::class, 'UserId', 'UserId');
+        return $this->belongsTo(UserModel::class, 'id', 'UserId');
     }
 
     public function Posts(){
-        return $this->belongsTo(PostModel::class, 'PostId', 'PostId');
+        return $this->belongsTo(PostModel::class, 'id', 'UserId');
     }
 }
