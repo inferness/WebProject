@@ -26,4 +26,8 @@ class UserModel extends Authenticatable implements AuthenticatableContract, Auth
     public function Posted(){
         return $this->hasMany(PostModel::class, 'UserId', 'UserId');
     }
+
+    public function Upvotes(){
+        return $this->hasMany(UserUpvotesModel::class, 'UserId', 'UserId');
+    }
 }

@@ -13,6 +13,7 @@ use App\Models\CommunitiesModelModel;
 use App\Models\FollowedCommunityModel;
 use App\Models\FollowedCommunityModelModel;
 use App\Models\PostModel;
+use App\Models\UserUpvotesModel;
 
 class MainController extends Controller
 {
@@ -122,6 +123,9 @@ class MainController extends Controller
             $filePath = $uploadedFile->storeAs('public/images/community', $community->CommunityId . '.jpg');
             $community->BannerPath = 'storage/images/community/' . $community->CommunityId . '.jpg';
         }
+        else{
+            $community->BannerPath = 'storage/images/default/defaultBanner.jpg';
+        }
 
         $community->save();
 
@@ -172,16 +176,25 @@ class MainController extends Controller
             $uploadedFile = $request->file('file_input');
             $filePath = $uploadedFile->storeAs('public/images/posts', $post->PostId . '.jpg');
             $post->ImagePath = 'storage/images/posts/' . $post->PostId . '.jpg';
+            $post->HasImage = true;
+        }
+        else{
+            $post->ImagePath = 'storage/images/default/defaultPost.jpg';
+            $post->HasImage = false;
         }
 
         $post->save();
 
-        return redirect()->route('home');
+        return redirect()->route('communityPage', ['communityId'=>$communityId]);
     }
     public function postPage($postId){
-        $post = PostModel::where('PostId', $postId)->first();
 
-        return view('posts', compact('post'));
+        $userId = auth()->user()->UserId;
+
+        $post = PostModel::where('PostId', $postId)->first();
+        $upvoted = UserUpvotesModel::where('UserId', $userId)->where('PostId', $postId)->first();
+
+        return view('posts', compact('post', 'upvoted'));
     }
 
     public function followCommunity($communityId){
@@ -192,6 +205,7 @@ class MainController extends Controller
         $follow->UserId = auth()->user()->UserId;
         $follow->CommunityId = $communityId;
 
+        CommunitiesModel::where('CommunityId', $communityId)->increment('FollowerCount');
         $follow->save();
 
         return redirect()->route('communityPage', ['communityId'=>$communityId]);
@@ -206,6 +220,35 @@ class MainController extends Controller
         ->where('CommunityId', $communityId)
         ->delete();
 
+        CommunitiesModel::where('CommunityId', $communityId)->decrement('FollowerCount');
+
         return redirect()->route('communityPage', ['communityId'=>$communityId]);
+    }
+
+    public function upvotePost($postId){
+
+        $follow = new UserUpvotesModel();
+        // dd($communityId);
+
+        $follow->UserId = auth()->user()->UserId;
+        $follow->PostId = $postId;
+
+        PostModel::where('PostId', $postId)->increment('UpvoteCount');
+        $follow->save();
+
+        return redirect()->route('postPage', ['postId'=>$postId]);
+    }
+
+    public function downvotePost($postId){
+
+        $userId = auth()->user()->UserId;
+
+        UserUpvotesModel::where('UserId', $userId)
+        ->where('PostId', $postId)
+        ->delete();
+
+        PostModel::where('PostId', $postId)->decrement('UpvoteCount');
+
+        return redirect()->route('postPage', ['postId'=>$postId]);
     }
 }

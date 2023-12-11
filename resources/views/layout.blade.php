@@ -136,7 +136,7 @@
                 <ul id="followed" class="hidden py-2 space-y-2 max-h-[200px] overflow-auto">
                     @forelse($followedCommunities as $followedCommunity)
                     <li>
-                        <a href="{{route('communityPage', ['communityId' => $ownedCommunity->CommunityId])}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{$followedCommunity->Community->Name}}</a>
+                        <a href="{{route('communityPage', ['communityId' => $followedCommunity->CommunityId])}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{$followedCommunity->Community->Name}}</a>
                     </li>
                     @empty
                     <li>
@@ -149,7 +149,7 @@
         </div>
         </aside>
         <div class="lg:ml-[320px] mt-4 text-white">
-            <div class="mx-5">
+            <div class="mx-5 pb-7">
                 @yield('content')
             </div>
         </div>

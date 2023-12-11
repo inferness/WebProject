@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title','home')
+@section('title','CommonGrounds')
 
 @section('content')
     <div class="w-11/12">

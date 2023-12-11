@@ -26,18 +26,29 @@
                 @endif
             </div>
         </div> 
-      <div class="flex gap-5">
+        <div class="flex gap-5 max-w-full">
             <div class="flex flex-col gap-4 w-full">
                 @foreach ($posts as $post)
-                <a href="{{url( '/post/' . $post->PostId)}}" class="flex w-full bg-gray-700 max-h-[150px] overflow-hidden rounded-xl">
+                <a href="{{url( '/post/' . $post->PostId)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl max-w-[945px]">
                     <div class="min-w-[200px] w-[200px] overflow-hidden xl:block hidden">
                         <img src="{{ asset($post->ImagePath) }}" alt="" class="h-full max-w object-cover">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 w-full">
+                        <div class="flex w-full">
+                            <div class="rounded-full overflow-hidden">
+                                <img src="{{asset('storage/images/avatar/defaultAvatar.jpg')}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                            </div>
+                            <span class=" px-2 my-auto font-semibold">{{$post->PostedBy->username}}</span>
+                            <div class=" px-2 my-auto font-semibold ml-auto">{{$post->PostedAt}}</div>
+                        </div>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->Title }}</h5>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden" style="text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden break-all" style="text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                             {{ $post->Description }}
                         </p>
+                        <div class="text-white bg-transparent border-[1px] rounded-full flex justify-center px-3 py-1 w-16">
+                            <i class='bx bxs-upvote text-xl text-white'></i>
+                            <div class="text-white my-auto px-1 font-semibold">{{$post->UpvoteCount}}</div>
+                        </div>
                     </div>
                 </a>
                 @endforeach
@@ -55,6 +66,6 @@
                     </div>
                 </div>
             </div>
-      </div>
+        </div>
     </div>
 @endsection

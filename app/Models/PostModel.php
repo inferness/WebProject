@@ -20,4 +20,8 @@ class PostModel extends Model
     public function PostedBy(){
         return $this->belongsTo(UserModel::class, 'UserId', 'UserId');
     }
+
+    public function UpvotedBy(){
+        return $this->hasMany(UserUpvotesModel::class, 'CommunityId', 'CommunityId');
+    }
 }
