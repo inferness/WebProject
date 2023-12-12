@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('FollowedCommunity', function (Blueprint $table) {
+        Schema::create('userUpvote', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            $table->string('CommunityId');
-            $table->foreign('CommunityId')->references('CommunityId')->on('Communities')->onDelete('cascade');
+            // $table->string('PostId');
+            // $table->foreign('PostId')->references('PostId')->on('Posts')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
         });
     }
 

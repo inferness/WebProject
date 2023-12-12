@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('Name');
             $table->text('Description');
             $table->string('Owner');
+            $table->integer('FollowerCount')->default(0);
+            $table->timestamp('CreatedAt')->useCurrent();
             $table->string('BannerPath')->unique();
         });
     }

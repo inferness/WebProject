@@ -44,10 +44,10 @@
                     </form>
                     
                 </div>
-                <div class="rounded-l-lg bg-indigo-500">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Hello, Welcome Back
-                    </h1>
+                <div class="w-1/2 p-4 hidden lg:block">
+                    <div class="bg-gray-700 w-full rounded-[30px] h-full overflow-hidden">
+                        <img src="{{ asset('images/test.jpg') }}" alt="asdasd" class="h-full w-auto object-cover">
+                    </div>
                 </div>
             </div>
         </div>

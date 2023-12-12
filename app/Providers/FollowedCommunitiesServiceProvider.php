@@ -28,9 +28,9 @@ class FollowedCommunitiesServiceProvider extends ServiceProvider
             // Check if the user is authenticated
             if (Auth::check()) {
                 // User is authenticated, fetch the followed communities
-                $UserId = Auth::user()->UserId;
+                $UserId = Auth::user()->id;
                 // dd($UserId);
-                $followedCommunities = FollowedCommunityModel::where('UserId', $UserId)->get();
+                $followedCommunities = FollowedCommunityModel::where('user_id', $UserId)->get();
                 
                 $ownedCommunities = CommunitiesModel::where('Owner', $UserId)->get();
             } else {
