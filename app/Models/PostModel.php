@@ -12,7 +12,7 @@ class PostModel extends Model
     use Commentable;
     protected $table = 'Posts';
     public $incrementing = false;
-    public $timestamps = false;
+    // public $timestamps = false;
 
     public function InCommunity(){
         return $this->belongsTo(CommunitiesModel::class, 'CommunityId', 'CommunityId');

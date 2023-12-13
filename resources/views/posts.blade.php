@@ -11,7 +11,7 @@
                 <div>
                     <a href="#" rel="author" class="text-xl font-bold text-gray-900 dark:text-white">{{$post->PostedBy->username}}</a>
                     <p class="text-base text-gray-500 dark:text-gray-400">Joined on {{$post->PostedBy->JoinDate}}</p>
-                    <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time></p>
+                    <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate datetime="2022-02-08" title="February 8th, 2022">{{$post->created_at->diffForHumans()}}</time></p>
                 </div>
             </div>
             <h1 class="my-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{$post->Title}}</h1>
@@ -72,11 +72,11 @@
             </a>
             <div class="p-5">
                 <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Top Community</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Top Communities</h5>
                 </a>
-                <div class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden">
-                    <p style="text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">blabla</p>
-                </div>
+                @foreach($topCommunities as $c)
+                <div>{{$c->Name}}</div>
+                @endforeach
             </div>
         </div>
     </div>
