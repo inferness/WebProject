@@ -30,9 +30,11 @@
             <div class="flex flex-col gap-4 w-full">
                 @foreach ($posts as $post)
                 <a href="{{url( '/post/' . $post->id)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl max-w-[945px]">
+                    @if($post->ImagePath)
                     <div class="min-w-[200px] w-[200px] overflow-hidden xl:block hidden">
                         <img src="{{ asset($post->ImagePath) }}" alt="" class="h-full max-w object-cover">
                     </div>
+                    @endif
                     <div class="p-3 w-full">
                         <div class="flex w-full">
                             <div class="rounded-full overflow-hidden">
@@ -52,6 +54,7 @@
                     </div>
                 </a>
                 @endforeach
+                {{$posts->links()}}
             </div>
             <div class="sm:flex flex-col w-1/3 min-w-[260px] hidden">
                 <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

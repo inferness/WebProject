@@ -139,7 +139,7 @@ class MainController extends Controller
         $userId = auth()->user()->id;
         // Fetch the community from the database
         $community = CommunitiesModel::where('CommunityId', $communityId)->first();
-        $posts = PostModel::where('CommunityId', $communityId)->get();
+        $posts = PostModel::where('CommunityId', $communityId)->paginate(10);
         // dd($posts);
         $following = FollowedCommunityModel::where('CommunityId', $communityId)->where('user_id', $userId)->first();
 
@@ -178,11 +178,6 @@ class MainController extends Controller
             $uploadedFile = $request->file('file_input');
             $filePath = $uploadedFile->storeAs('public/images/posts', $uniqueID . '.jpg');
             $post->ImagePath = 'storage/images/posts/' . $uniqueID . '.jpg';
-            $post->HasImage = true;
-        }
-        else{
-            $post->ImagePath = 'storage/images/default/defaultPost.jpg';
-            $post->HasImage = false;
         }
 
         $post->save();
@@ -203,62 +198,83 @@ class MainController extends Controller
         $upvoted = UserUpvotesModel::where('user_id', $userId)->where('post_id', $id)->first();
         $commentCount = Comment::where('commentable_id', $id)->count();
         $following = FollowedCommunityModel::where('CommunityId', $post->InCommunity->CommunityId)->where('user_id', $userId)->first();
+        $topCommunities = CommunitiesModel::where('CommunityId', $post->InCommunity->CommunityId)->orderByDesc('FollowerCount')->limit(8)->get();
 
-        return view('posts', compact('post', 'upvoted', 'commentCount', 'following'));
+        return view('posts', compact('post', 'upvoted', 'commentCount', 'following', 'topCommunities'));
     }
 
     public function followCommunity($communityId){
-
-        $follow = new FollowedCommunityModel();
-        // dd($communityId);
-
-        $follow->user_id = auth()->user()->id;
-        $follow->CommunityId = $communityId;
-
-        CommunitiesModel::where('CommunityId', $communityId)->increment('FollowerCount');
-        $follow->save();
-
-        return redirect()->route('communityPage', ['communityId'=>$communityId]);
+        
+        if(Auth::check()){
+            $follow = new FollowedCommunityModel();
+            // dd($communityId);
+    
+            $follow->user_id = auth()->user()->id;
+            $follow->CommunityId = $communityId;
+    
+            CommunitiesModel::where('CommunityId', $communityId)->increment('FollowerCount');
+            $follow->save();
+    
+            return redirect()->route('communityPage', ['communityId'=>$communityId]);
+        }
+        else{
+            return view('login');
+        }
     }
 
     public function unfollowCommunity($communityId){
 
-        $userId = auth()->user()->id;
-
-        // Find and delete the record with the given user and community IDs
-        FollowedCommunityModel::where('user_id', $userId)
-        ->where('CommunityId', $communityId)
-        ->delete();
-
-        CommunitiesModel::where('CommunityId', $communityId)->decrement('FollowerCount');
-
-        return redirect()->route('communityPage', ['communityId'=>$communityId]);
+        if(Auth::check()){
+            $userId = auth()->user()->id;
+    
+            // Find and delete the record with the given user and community IDs
+            FollowedCommunityModel::where('user_id', $userId)
+            ->where('CommunityId', $communityId)
+            ->delete();
+    
+            CommunitiesModel::where('CommunityId', $communityId)->decrement('FollowerCount');
+    
+            return redirect()->route('communityPage', ['communityId'=>$communityId]);
+        }
+        else{
+            return view('login');
+        }
     }
 
     public function upvotePost($postId){
 
-        $follow = new UserUpvotesModel();
-        // dd($communityId);
-
-        $follow->user_id = auth()->user()->id;
-        $follow->post_id = $postId;
-
-        PostModel::where('id', $postId)->increment('UpvoteCount');
-        $follow->save();
-
-        return redirect()->route('postPage', ['postId'=>$postId]);
+        if(Auth::check()){
+            $follow = new UserUpvotesModel();
+            // dd($communityId);
+    
+            $follow->user_id = auth()->user()->id;
+            $follow->post_id = $postId;
+    
+            PostModel::where('id', $postId)->increment('UpvoteCount');
+            $follow->save();
+    
+            return redirect()->route('postPage', ['postId'=>$postId]);
+        }
+        else{
+            return view('login');
+        }
     }
 
     public function downvotePost($postId){
 
-        $userId = auth()->user()->id;
-
-        UserUpvotesModel::where('user_id', $userId)
-        ->where('post_id', $postId)
-        ->delete();
-
-        PostModel::where('id', $postId)->decrement('UpvoteCount');
-
-        return redirect()->route('postPage', ['postId'=>$postId]);
+        if(Auth::check()){
+            $userId = auth()->user()->id;
+    
+            UserUpvotesModel::where('user_id', $userId)
+            ->where('post_id', $postId)
+            ->delete();
+    
+            PostModel::where('id', $postId)->decrement('UpvoteCount');
+    
+            return redirect()->route('postPage', ['postId'=>$postId]);
+        }
+        else{
+            return view('login');
+        }
     }
 }
