@@ -21,9 +21,8 @@ return new class extends Migration
             $table->text('Description');
             $table->integer('UpvoteCount')->default(0);
             $table->string('UserId')->references('UserId')->on('User')->onDelete('cascade');
-            $table->string('ImagePath');
-            $table->boolean('HasImage');
-            $table->timestamp('PostedAt')->useCurrent();
+            $table->string('ImagePath')->nullable();
+            $table->timestamps();
         });
     }
 
