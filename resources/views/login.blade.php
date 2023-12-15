@@ -14,25 +14,24 @@
     </head>
     <body class="bg-gray-900">   
     <section class="bg-gray-50 dark:bg-gray-900">
-        <div class=" flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class=" flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
             <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                CommonGround   
+                CommonGrounds
             </a>
-            <div class="flex flex-row w-full bg-white rounded-lg shadow dark:border md:w-full md:mt-0 sm:max-w-2xl xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                <div class="md:w-70 p-6 space-y-6 md:space-y-6 sm:p-8">
-                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <div class="flex flex-row h-1/2 bg-white rounded-[30px] shadow dark:border w-auto lg:max-w-4xl dark:bg-gray-800 dark:border-gray-700">
+                <div class="md:w-70 p-6 space-y-6 md:space-y-6 w-full md:min-w-[400px] lg:w-1/2">
+                    <h1 class="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
                         Sign in to your account
                     </h1>
-                    <form class="space-y-4 md:space-y-6" action="{{url('processLogin')}}" method="POST">
+                    <form class="space-y-6" action="{{url('processLogin')}}" method="POST">
                         @csrf
-
                         <div>
                             <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your username</label>
-                            <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required="">
+                            <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required="">
                         </div>
                         <div>
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
                         </div>
                         <div class="flex justify-end">
                             <a href="#" class="text-sm font-medium hover:underline text-blue-500">Forgot password?</a>
@@ -41,11 +40,10 @@
                         <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                             Don’t have an account yet? <a href="{{url('register')}}" class="font-medium text-blue-600 hover:underline dark:text-primary-500">Sign up</a>
                         </p>
-                    </form>
-                    
+                    </form>                
                 </div>
                 <div class="w-1/2 p-4 hidden lg:block">
-                    <div class="bg-gray-700 w-full rounded-[30px] h-full overflow-hidden">
+                    <div class="bg-gray-700 w-full rounded-[20px] h-full overflow-hidden">
                         <img src="{{ asset('images/test.jpg') }}" alt="asdasd" class="h-full w-auto object-cover">
                     </div>
                 </div>

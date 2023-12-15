@@ -15,6 +15,8 @@ use App\Models\FollowedCommunityModelModel;
 use App\Models\PostModel;
 use App\Models\UserUpvotesModel;
 use Usamamuneerchaudhary\Commentify\Models\Comment;
+use Illuminate\Support\Facades\Validator;
+use App\Models\SavedPostsModel;
 
 class MainController extends Controller
 {
@@ -27,10 +29,42 @@ class MainController extends Controller
     }
 
     public function home(){
-        $user = Auth::user();
-
+        // dd($posts);
+        $topCommunities = CommunitiesModel::orderByDesc('FollowerCount')->limit(5)->get();
         // dd($user);
-        return view('home');
+        $recPosts = null;
+        if(auth::check()){
+            $userId = auth()->user()->id;
+            $user = Auth::user();
+            $followedCommunityIds = FollowedCommunityModel::where('user_id', $userId)->pluck('CommunityId')->toArray();
+            if($followedCommunityIds){
+                $recPosts = PostModel::whereIn('CommunityId', $followedCommunityIds)
+                ->orderByDesc('UpvoteCount')
+                ->limit(5)
+                ->get();
+            }
+        }
+        $recPosts = PostModel::inRandomOrder()
+        ->limit(5)
+        ->get();
+        $posts = PostModel::orderByDesc('created_at')->paginate(5);
+        return view('home', compact('posts', 'topCommunities', 'recPosts'));
+    }
+
+    public function savedPage(){
+        if(Auth::check()){
+            $userId = auth()->user()->id;
+            $savedPosts = SavedPostsModel::where('user_id', $userId)->paginate(10);
+            return view('saved', compact('savedPosts'));
+        }
+        else{
+            return view('login');
+        }
+    }
+
+    public function communities(){
+        $communities = CommunitiesModel::orderByDesc('FollowerCount')->paginate(10);
+        return view('Communities', compact('communities'));
     }
 
     public function login(){
@@ -47,7 +81,7 @@ class MainController extends Controller
             // Authentication successful
             $user = Auth::user();
             // dd($user);
-            return view('home');
+            return redirect()->route('home');
         } else {
             // Authentication failed
             return back()->withErrors(['login' => 'Invalid username or password.'])->withInput();
@@ -107,6 +141,19 @@ class MainController extends Controller
 
     public function createCommunityForm(Request $request){
         $faker = Faker::create();
+
+        $validator = Validator::make($request->all(), [
+            'Name' => 'required|string|max:255',
+            'Description' => 'required|string|max:900',
+            'file_input' => 'image|mimes:jpeg,png,jpg',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $community = new CommunitiesModel();
 
         // dd($request);
@@ -122,11 +169,12 @@ class MainController extends Controller
 
         if ($request->hasFile('file_input')) {
             $uploadedFile = $request->file('file_input');
-            $filePath = $uploadedFile->storeAs('public/images/community', $community->CommunityId . '.jpg');
-            $community->BannerPath = 'storage/images/community/' . $community->CommunityId . '.jpg';
+            $extension = $uploadedFile->getClientOriginalExtension();
+            $filePath = $uploadedFile->storeAs('public/images/community', $community->CommunityId . '.' . $extension);
+            $community->BannerPath = 'storage/images/community/' . $community->CommunityId . '.' . $extension;
         }
         else{
-            $community->BannerPath = 'storage/images/default/defaultBanner.jpg';
+            $community->BannerPath = 'images/default/defaultBanner.jpg';
         }
 
         $community->save();
@@ -134,17 +182,54 @@ class MainController extends Controller
         return redirect()->route('home');
     }
 
-    public function communityPage($communityId)
+    public function communityPage($communityId, Request $request)
     {
-        $userId = auth()->user()->id;
+        
         // Fetch the community from the database
         $community = CommunitiesModel::where('CommunityId', $communityId)->first();
-        $posts = PostModel::where('CommunityId', $communityId)->paginate(10);
-        // dd($posts);
-        $following = FollowedCommunityModel::where('CommunityId', $communityId)->where('user_id', $userId)->first();
+        $query = PostModel::where('CommunityId', $communityId);
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('Title', 'like', '%' . $searchTerm . '%');
+        }
 
-        // Return the community page view with the community data
-        return view('community', compact('community', 'posts', 'following'));
+        $sortOptions = [
+            'upvote' => 'Upvotes',
+            'date' => 'Date',
+        ];
+    
+        $sortField = $request->input('sort', 'upvote'); // Defaultnya berdasarkan upvote
+        $sortDirection = $request->input('direction', 'desc'); //sama kaya atas
+        
+        switch ($sortField) {
+            case 'upvote':
+                $query->orderBy('UpvoteCount', $sortDirection);
+                break;
+            case 'date':
+                $query->orderBy('created_at', $sortDirection);
+                break;
+        }
+        $posts = $query->paginate(10);
+        $topCommunities = CommunitiesModel::orderByDesc('FollowerCount')->limit(8)->get();
+        // dd($posts);
+        if(Auth::check()){
+            $userId = auth()->user()->id;
+            $following = FollowedCommunityModel::where('CommunityId', $communityId)->where('user_id', $userId)->first();
+        }
+        else{
+            $following = null;
+        }
+
+        return view('community', [
+            'community' => $community,
+            'posts' => $posts,
+            'following' => $following,
+            'topCommunities' => $topCommunities,
+            'searchTerm' => $request->input('search'),
+            'sortOptions' => $sortOptions,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection,
+        ]);
     }
 
     public function createPost($CommunityId){
@@ -160,6 +245,19 @@ class MainController extends Controller
     public function createPostForm($communityId, Request $request){
 
         $faker = Faker::create();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'file_input' => 'image|mimes:jpeg,png,jpg',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $post = new PostModel();
 
         $uniqueNumber = $faker->unique()->numberBetween(1,9999);
@@ -176,8 +274,9 @@ class MainController extends Controller
 
         if ($request->hasFile('file_input')) {
             $uploadedFile = $request->file('file_input');
-            $filePath = $uploadedFile->storeAs('public/images/posts', $uniqueID . '.jpg');
-            $post->ImagePath = 'storage/images/posts/' . $uniqueID . '.jpg';
+            $extension = $uploadedFile->getClientOriginalExtension();
+            $filePath = $uploadedFile->storeAs('public/images/posts', $uniqueID . '.' . $extension);
+            $post->ImagePath = 'storage/images/posts/' . $uniqueID . '.' . $extension;
         }
 
         $post->save();
@@ -196,11 +295,12 @@ class MainController extends Controller
 
         $post = PostModel::where('id', $id)->first();
         $upvoted = UserUpvotesModel::where('user_id', $userId)->where('post_id', $id)->first();
+        $saved = SavedPostsModel::where('user_id', $userId)->where('post_id', $id)->first();
         $commentCount = Comment::where('commentable_id', $id)->count();
         $following = FollowedCommunityModel::where('CommunityId', $post->InCommunity->CommunityId)->where('user_id', $userId)->first();
-        $topCommunities = CommunitiesModel::where('CommunityId', $post->InCommunity->CommunityId)->orderByDesc('FollowerCount')->limit(8)->get();
+        $topCommunities = CommunitiesModel::orderByDesc('FollowerCount')->limit(8)->get();
 
-        return view('posts', compact('post', 'upvoted', 'commentCount', 'following', 'topCommunities'));
+        return view('posts', compact('post', 'upvoted', 'saved', 'commentCount', 'following', 'topCommunities'));
     }
 
     public function followCommunity($communityId){
@@ -242,7 +342,6 @@ class MainController extends Controller
     }
 
     public function upvotePost($postId){
-
         if(Auth::check()){
             $follow = new UserUpvotesModel();
             // dd($communityId);
@@ -271,6 +370,38 @@ class MainController extends Controller
     
             PostModel::where('id', $postId)->decrement('UpvoteCount');
     
+            return redirect()->route('postPage', ['postId'=>$postId]);
+        }
+        else{
+            return view('login');
+        }
+    }
+
+    public function savePost($postId){
+        if(Auth::check()){
+            $save = new SavedPostsModel();
+            // dd($communityId);
+    
+            $save->user_id = auth()->user()->id;
+            $save->post_id = $postId;
+    
+            $save->save();
+    
+            return redirect()->route('postPage', ['postId'=>$postId]);
+        }
+        else{
+            return view('login');
+        }
+    }
+
+    public function unsavePost($postId){
+        if(Auth::check()){
+            $userId = auth()->user()->id;
+    
+            SavedPostsModel::where('user_id', $userId)
+            ->where('post_id', $postId)
+            ->delete();
+        
             return redirect()->route('postPage', ['postId'=>$postId]);
         }
         else{

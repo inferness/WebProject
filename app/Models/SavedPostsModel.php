@@ -13,10 +13,10 @@ class SavedPostsModel extends Model
     public $timestamps = false;
 
     public function User(){
-        return $this->belongsTo(UserModel::class, 'Id', 'Id');
+        return $this->belongsTo(UserModel::class, 'id', 'UserId');
     }
 
     public function Posts(){
-        return $this->belongsTo(PostModel::class, 'id', 'id');
+        return $this->belongsTo(PostModel::class, 'post_id', 'id');
     }
 }

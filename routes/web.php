@@ -14,18 +14,14 @@ use App\Http\Controllers\MainController;
 |
 */
 
-Route::get('/popular', function () {
-    return view('popular');
-});
-Route::get('/saved', function () {
-    return view('saved');
-});
 Route::get('/profile', function () {
     return view('profile');
 });
 
 Route::get('/', [MainController::class, 'landingPage']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
+Route::get('/saved', [MainController::class, 'savedPage']);
+Route::get('/popular', [MainController::class, 'communities']);
 
 Route::get('/community/{communityId}', [MainController::class, 'communityPage'])->name('communityPage');
 Route::get('post/{postId}', [MainController::class, 'postPage'])->name('postPage');
@@ -49,4 +45,7 @@ Route::get('/unfollow/{communityId}', [MainController::class, 'unfollowCommunity
 
 Route::get('/upvote/{id}', [MainController::class, 'upvotePost'])->name('upvotePost');
 Route::get('/downvote/{id}', [MainController::class, 'downvotePost'])->name('downvotePost');
+
+Route::get('/save/{id}', [MainController::class, 'savePost'])->name('savePost');
+Route::get('/unsave/{id}', [MainController::class, 'unsavePost'])->name('unsavePost');
 

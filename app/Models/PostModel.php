@@ -25,4 +25,8 @@ class PostModel extends Model
     public function UpvotedBy(){
         return $this->hasMany(UserUpvotesModel::class, 'CommunityId', 'CommunityId');
     }
+
+    public function SavedByUsers(){
+        return $this->hasMany(SavedPostsModel::class, 'post_id', 'id');
+    }
 }

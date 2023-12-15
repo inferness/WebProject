@@ -40,7 +40,7 @@
                     <li>
                         <a href="/popular" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                             <i class='bx bxs-hot text-xl text-gray-400'></i>                       
-                            <span class="ms-3">Popular</span>
+                            <span class="ms-3">Communities</span>
                         </a>
                     </li>
                     <li>

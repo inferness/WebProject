@@ -16,7 +16,7 @@
             </div>
             <h1 class="my-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{$post->Title}}</h1>
             <p class=" text-gray-400 break-words">{{$post->Description}}</p>
-            @if($post->HasImage)
+            @if($post->ImagePath)
             <div class="flex justify-center p-3">
                 <figure><img src="{{asset($post->ImagePath)}}" alt="">
                 </figure>
@@ -34,10 +34,17 @@
                     <div class="text-white my-auto px-1 font-semibold">{{$post->UpvoteCount}}</div>
                 </a>
                 @endif
-                <div class="w-auto text-white bg-gray-400 rounded-full flex justify-center px-3 py-1">
-                    <i class='bx bx-message-dots text-xl text-white'></i>
-                    <div class="text-white my-auto px-1 font-semibold">{{$commentCount}}</div>
-                </div>
+                @if($saved)
+                <a href="{{route('unsavePost', ['id'=>$post->id])}}" class="w-auto text-white bg-orange-500 rounded-full flex justify-center px-3 py-1">
+                    <i class='bx bxs-pin text-xl text-white'></i>
+                    <div class="text-white my-auto px-1 font-semibold">saved</div>
+                </a>
+                @else
+                <a href="{{route('savePost', ['id'=>$post->id])}}" class="w-auto text-white bg-gray-400 rounded-full flex justify-center px-3 py-1">
+                    <i class='bx bxs-pin text-xl text-white'></i>
+                    <div class="text-white my-auto px-1 font-semibold">save</div>
+                </a>
+                @endif
             </div>
         </div>
         <br>
@@ -71,12 +78,16 @@
                 <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
             </a>
             <div class="p-5">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Top Communities</h5>
-                </a>
-                @foreach($topCommunities as $c)
-                <div>{{$c->Name}}</div>
-                @endforeach
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Top Communities</h5>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Some of the highest followed Communities</p>
+                <div class="flex flex-col">
+                    @foreach($topCommunities as $c)
+                    <a href="{{url('community/' . $c->CommunityId)}}" class="flex gap-4 w-full items-center py-2 hover:bg-gray-500 rounded-md px-2">
+                        <img src="{{asset($c->BannerPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                        <div class="my-auto text-lg font-semibold tracking-tight text-gray-900 dark:text-white">{{$c->Name}}</div>
+                    </a>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
