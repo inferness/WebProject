@@ -7,7 +7,7 @@
     <div class=" p-4 max-w-6xl flex flex-col justify-start w-full">
         <div>
             <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                <img class="mr-4 w-16 h-16 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-2.jpg" alt="Jese Leos">
+                <img class="mr-4 w-16 h-16 rounded-full" src="{{asset($post->PostedBy->AvatarPath)}}" alt="Jese Leos">
                 <div>
                     <a href="#" rel="author" class="text-xl font-bold text-gray-900 dark:text-white">{{$post->PostedBy->username}}</a>
                     <p class="text-base text-gray-500 dark:text-gray-400">Joined on {{$post->PostedBy->JoinDate}}</p>
@@ -54,7 +54,7 @@
         <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div class="p-5">
                 <a href="{{url('community/' . $post->InCommunity->CommunityId)}}" class="flex gap-4 w-full items-center">
-                    <img src="{{asset('storage/images/avatar/defaultAvatar.jpg')}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                    <img src="{{asset($post->InCommunity->BannerPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
                     <div class="my-auto text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{$post->InCommunity->Name}}</div>
                 </a>
                 <div class="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden">
@@ -74,9 +74,6 @@
             </div>
         </div>
         <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-                <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
-            </a>
             <div class="p-5">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Top Communities</h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Some of the highest followed Communities</p>

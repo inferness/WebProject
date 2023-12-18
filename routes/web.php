@@ -14,14 +14,14 @@ use App\Http\Controllers\MainController;
 |
 */
 
-Route::get('/profile', function () {
-    return view('profile');
-});
 
 Route::get('/', [MainController::class, 'landingPage']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
 Route::get('/saved', [MainController::class, 'savedPage']);
 Route::get('/popular', [MainController::class, 'communities']);
+
+Route::get('/profile', [MainController::class, 'profilePage'])->name('profile');
+Route::post('/profileProcess', [MainController::class, 'profileForm'])->name('profileForm');
 
 Route::get('/community/{communityId}', [MainController::class, 'communityPage'])->name('communityPage');
 Route::get('post/{postId}', [MainController::class, 'postPage'])->name('postPage');
@@ -39,6 +39,7 @@ Route::post('/createCommunityForm', [MainController::class, 'createCommunityForm
 
 Route::get('{communityId}/createPost', [MainController::class, 'createPost'])->name('createPost');
 Route::post('{communityId}/createPostForm,', [MainController::class, 'createPostForm'])->name('createPostForm');
+Route::get('deleteCommunity/{communityId}', [MainController::class, 'deleteCommunity'])->name('deleteCommunity');
 
 Route::get('/follow/{communityId}', [MainController::class, 'followCommunity'])->name('follow');
 Route::get('/unfollow/{communityId}', [MainController::class, 'unfollowCommunity'])->name('unfollow');

@@ -43,10 +43,18 @@ class MainController extends Controller
                 ->limit(5)
                 ->get();
             }
+            else{
+                $recPosts = PostModel::inRandomOrder()
+                ->limit(5)
+                ->get();
+            }
         }
-        $recPosts = PostModel::inRandomOrder()
-        ->limit(5)
-        ->get();
+        else{
+            $recPosts = PostModel::inRandomOrder()
+            ->limit(5)
+            ->get();
+        }
+        
         $posts = PostModel::orderByDesc('created_at')->paginate(5);
         return view('home', compact('posts', 'topCommunities', 'recPosts'));
     }
@@ -65,6 +73,50 @@ class MainController extends Controller
     public function communities(){
         $communities = CommunitiesModel::orderByDesc('FollowerCount')->paginate(10);
         return view('Communities', compact('communities'));
+    }
+
+    public function profilePage(){
+        if(Auth::check()){
+            $user = auth()->user();
+            $ownedCommunities = CommunitiesModel::where('Owner', $user->id)->get();
+            return view('profile', compact('user', 'ownedCommunities'));
+        }
+        else{
+            return view('login');
+        }
+    }
+
+    public function profileForm(Request $request){
+
+        $curUser = Auth::user();
+        $user = UserModel::findOrFail($curUser->id);
+
+        // Validate the form data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'DOB' => 'nullable|date',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        // Update user information
+        $user->name = $request->input('name');
+        $user->dateOfBirth = $request->input('DOB');
+        $user->description = $request->input('description');
+        $user->email = $curUser->email;
+        $user->username = $request->input('username');
+        $user->password = $curUser->password;
+
+        if($request->hasFile('file_input')){
+            $uploadedFile = $request->file('file_input');
+            $extension = $uploadedFile->getClientOriginalExtension();
+            $filePath = $uploadedFile->storeAs('public/images/avatar/', $user->id . '.' . $extension);
+            $user->AvatarPath = 'storage/images/avatar/' . $user->id . '.' . $extension;
+            $user->hasAvatar = true;
+        }
+
+        $user->save();
+
+        return redirect()->route('profile');
     }
 
     public function login(){
@@ -180,6 +232,14 @@ class MainController extends Controller
         $community->save();
 
         return redirect()->route('home');
+    }
+
+    public function deleteCommunity($communityId){
+        $community = CommunitiesModel::findOrFail($communityId);
+
+        $community->delete();
+
+        return redirect()->route('profile')->with('success', 'Community deleted successfully.');
     }
 
     public function communityPage($communityId, Request $request)

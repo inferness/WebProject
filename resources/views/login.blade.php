@@ -44,7 +44,7 @@
                 </div>
                 <div class="w-1/2 p-4 hidden lg:block">
                     <div class="bg-gray-700 w-full rounded-[20px] h-full overflow-hidden">
-                        <img src="{{ asset('images/test.jpg') }}" alt="asdasd" class="h-full w-auto object-cover">
+                        <img src="{{ asset('images/default/LoginBanner.jpg') }}" alt="asdasd" class="h-full w-auto object-cover">
                     </div>
                 </div>
             </div>

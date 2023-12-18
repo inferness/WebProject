@@ -20,9 +20,9 @@
                     <div class="p-3 w-full">
                         <div class="flex w-full">
                             <div class="rounded-full overflow-hidden">
-                                <img src="{{asset('storage/images/avatar/defaultAvatar.jpg')}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                                <img src="{{asset($post->Posts->InCommunity->BannerPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
                             </div>
-                            <span class=" px-2 my-auto font-semibold">{{$post->Posts->PostedBy->username}}</span>
+                            <span class=" px-2 my-auto font-semibold">{{$post->Posts->InCommunity->Name}}</span>
                             <div class=" px-2 my-auto font-semibold ml-auto">{{$post->Posts->created_at->diffForHumans()}}</div>
                         </div>
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $post->Posts->Title }}</h5>

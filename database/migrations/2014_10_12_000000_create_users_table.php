@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('Users', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('description')->nullable();
             $table->string('password');
+            $table->string('AvatarPath')->default('images/default/defaultPost.jpg');
+            $table->boolean('hasAvatar')->default(false);
             $table->timestamp('JoinDate')->useCurrent();
+            $table->date('dateOfBirth')->nullable();
+            
         });
     }
 

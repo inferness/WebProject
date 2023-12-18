@@ -64,7 +64,7 @@
                     <div class="p-3 w-full">
                         <div class="flex w-full">
                             <div class="rounded-full overflow-hidden">
-                                <img src="{{asset('storage/images/avatar/defaultAvatar.jpg')}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                                <img src="{{asset($post->PostedBy->AvatarPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
                             </div>
                             <span class=" px-2 my-auto font-semibold">{{$post->PostedBy->username}}</span>
                             <div class=" px-2 my-auto font-semibold ml-auto">{{$post->created_at->diffForHumans()}}</div>
@@ -84,7 +84,7 @@
                 @empty
                 <div class="flex items-center">
                     <hr class="flex-1 border-t">
-                    <p class="mx-4">Wow so empty, be the first to post in this community</p>
+                    <p class="mx-4">No posts found</p>
                     <hr class="flex-1 border-t">
                 </div>
                 @endforelse

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->string('CommunityId')->unique();
             $table->string('Name');
             $table->text('Description');
-            $table->string('Owner');
+            $table->bigInteger('Owner')->unsigned();
+            $table->foreign('Owner')->references('id')->on('Users')->onDelete('cascade');
             $table->integer('FollowerCount')->default(0);
             $table->timestamp('CreatedAt')->useCurrent();
             $table->string('BannerPath');
