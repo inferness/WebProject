@@ -6,11 +6,12 @@ BUAT PERTAMA KALI CLONE
 4. Buka project di VScode
 5. command prompt: composer install
 6. command prompt: npm install
-7. php artisan migrate //atau migrae:fresh kalo udah pernah migrate
-8. php artisan storage:link
-9. (optional) php artisan db:seed demoSeeder
-10. php artisan serve
-11. di comand prompt terpisah, npm run dev
+7. php artisan key:generate
+8. php artisan migrate //atau migrae:fresh kalo udah pernah migrate
+9. php artisan storage:link
+10. (optional) php artisan db:seed demoSeeder
+11. php artisan serve
+12. di comand prompt terpisah, npm run dev
 
 
 // note, karena ada penggunaan library external bernama commentify dan ada juga beberapa perubahan yang dibuat terhadap library tersebut, penampilan dan juga kerja dari sistem comment akan sedikit berbeda. jika ingin sama persis, replace folder ..\WebProject\vendor\usamamuneerchaudhary sama file dari link ini https://binusianorg-my.sharepoint.com/personal/cornelius_axel_binus_ac_id/_layouts/15/guestaccess.aspx?share=Eg_8cxGRz5hDr9UFaLD5278BJzGoRQAAnnad_q3ZfEf2bA&e=IUZE4v
