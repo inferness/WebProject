@@ -71,7 +71,7 @@
         <hr>
         <div class="flex flex-col gap-4 pt-4">
             @foreach ($recPosts as $rpost)
-            <a href="{{url( '/post/' . $post->id)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl">
+            <a href="{{url( '/post/' . $rpost->id)}}" class="flex w-full bg-gray-700 max-h-[250px] overflow-hidden rounded-xl">
                 @if($rpost->ImagePath)
                 <div class="min-w-[200px] w-[200px] overflow-hidden xl:block hidden">
                     <img src="{{ asset($rpost->ImagePath) }}" alt="noImage" class="h-full max-w object-cover">
@@ -80,7 +80,7 @@
                 <div class="p-3 w-full">
                     <div class="flex w-full">
                         <div class="rounded-full overflow-hidden">
-                            <img src="{{asset($post->InCommunity->BannerPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
+                            <img src="{{asset($rpost->InCommunity->BannerPath)}}" alt="no image" class="object-cover w-[30px] h-[30px] rounded-[100%]">
                         </div>
                         <span class=" px-2 my-auto font-semibold">{{$rpost->InCommunity->Name}}</span>
                         <div class=" px-2 my-auto font-semibold ml-auto">{{$rpost->created_at->diffForHumans()}}</div>

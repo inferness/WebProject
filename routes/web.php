@@ -18,7 +18,7 @@ use App\Http\Controllers\MainController;
 Route::get('/', [MainController::class, 'landingPage']);
 Route::get('/home', [MainController::class, 'home'])->name('home');
 Route::get('/saved', [MainController::class, 'savedPage']);
-Route::get('/popular', [MainController::class, 'communities']);
+Route::get('/communities', [MainController::class, 'communities'])->name('communities');
 
 Route::get('/profile', [MainController::class, 'profilePage'])->name('profile');
 Route::post('/profileProcess', [MainController::class, 'profileForm'])->name('profileForm');

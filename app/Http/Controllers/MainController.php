@@ -55,7 +55,7 @@ class MainController extends Controller
             ->get();
         }
         
-        $posts = PostModel::orderByDesc('created_at')->paginate(5);
+        $posts = PostModel::orderByDesc('UpvoteCount')->orderByDesc('created_at')->paginate(5);
         return view('home', compact('posts', 'topCommunities', 'recPosts'));
     }
 
@@ -70,9 +70,17 @@ class MainController extends Controller
         }
     }
 
-    public function communities(){
-        $communities = CommunitiesModel::orderByDesc('FollowerCount')->paginate(10);
-        return view('Communities', compact('communities'));
+    public function communities(Request $request){
+        $query = CommunitiesModel::orderByDesc('FollowerCount');
+        $searchTerm = $request->input('search');
+        if ($request->has('search')) {
+            $query->where('Name', 'like', '%' . $searchTerm . '%');
+        }
+        $communities = $query->paginate(9);
+        return view('Communities', [
+            'communities'=>$communities,
+            'searchTerm'=>$searchTerm
+        ]);
     }
 
     public function profilePage(){
@@ -248,8 +256,8 @@ class MainController extends Controller
         // Fetch the community from the database
         $community = CommunitiesModel::where('CommunityId', $communityId)->first();
         $query = PostModel::where('CommunityId', $communityId);
+        $searchTerm = $request->input('search');
         if ($request->has('search')) {
-            $searchTerm = $request->input('search');
             $query->where('Title', 'like', '%' . $searchTerm . '%');
         }
 
