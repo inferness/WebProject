@@ -1,4 +1,4 @@
-# Commong Ground
+# Common Grounds
 #### Video Demo: https://www.youtube.com/watch?v=QR9C85_giOo
 #### Description: a platform to post and create communities. users can discuss and comment on posts to share their opinions with other users who share simillar interests
 github: https://github.com/inferness/WebProject
