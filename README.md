@@ -1,4 +1,11 @@
-BUAT PERTAMA KALI CLONE
+# Commong Ground
+#### Video Demo: https://www.youtube.com/watch?v=QR9C85_giOo
+#### Description: a platform to post and create communities. users can discuss and comment on posts to share their opinions with other users who share simillar interests
+github: https://github.com/inferness/WebProject
+
+submission note: the bulk of the file size is from the vendor files and it is far too large to include, for that reason I did not include the vendor file in the .zip
+
+first time Clone guide (Indonesian)
 
 1. ke file explorer, buat folder yang lo mau pake buat directory project
 2. buka/cd ke foldernya terus buka cmd
